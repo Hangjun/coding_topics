@@ -60,4 +60,3 @@ int main() {
 	cout << "kth smallest element = " << kthSmallestInNArrays(matrix, 5);
 	return 0;
 }
-\end{lstlisting}
