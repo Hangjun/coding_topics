@@ -72,6 +72,13 @@ bool graphColoring(int G[][V], int m) {
 }
 
 int main() {
+	/* Create following graph and test whether it is 3 colorable
+      (3)---(2)
+       |   / |
+       |  /  |
+       | /   |
+      (0)---(1)
+    */
 	int graph[V][V] = {{0, 1, 1, 1},
         {1, 0, 1, 0},
         {1, 1, 0, 1},
@@ -79,5 +86,110 @@ int main() {
     };
     int m = 2; // number of colors
     cout << graphColoring (graph, m) << endl;
+	return 0;
+}
+
+
+/* For the GraphNode representation of a graph, we have the following solution */
+
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <unordered_map>
+
+using namespace std;
+
+struct GraphNode {
+    int label;
+    vector<GraphNode *> neighbors;
+    GraphNode(int x) : label(x) {};
+};
+
+void printColoring(unordered_map<GraphNode *, int> &coloring) {
+    unordered_map<GraphNode *, int>::iterator it;
+    for (it = coloring.begin(); it != coloring.end(); it++) {
+        cout << "Node " << it->first->label << " has color " << it->second << endl;
+    }
+}
+
+bool validColoring(GraphNode *n, unordered_map<GraphNode *, int> &coloring, int color) {
+    vector<GraphNode *> nNodes = n->neighbors;
+    for (int i = 0; i < nNodes.size(); i++) {
+        GraphNode *nn = nNodes[i];
+        if (coloring.find(nn) != coloring.end() && coloring[nn] == color) {
+            cout << "coloring conflict: coloring of " << nn->label << " is the same as " << n->label << endl;
+            return false;
+        }
+    }
+    return true;
+}
+
+bool graphColoringDFS(GraphNode *n, int m, unordered_map<GraphNode *, int> &coloring){
+    if (coloring.find(n) != coloring.end() && coloring[n] != 0)
+        return true;
+    cout << "node = " << n->label << endl;
+    // recurse on neighbors of s
+    for (int c = 1; c <= m; c++) {
+        if (validColoring(n, coloring, c)) {
+            coloring[n] = c;
+            cout << "color of node " << n->label << " set to be " << c << endl;
+            vector<GraphNode *> nNodes = n->neighbors;
+            // terminate condition
+            if (nNodes.empty())  return true;
+            for (int i = 0; i < nNodes.size(); i++) {
+                GraphNode *nn = nNodes[i];
+                cout << "now color neighbor node " << nn->label << " of curnode = " << n->label << endl;
+                if (!graphColoringDFS(nNodes[i], m, coloring)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+bool graphColoring(GraphNode *s, int m) {
+    if (m < 1)  return false;
+    unordered_map<GraphNode *, int> coloring;
+    if (graphColoringDFS(s, m, coloring)) {
+        cout << "A coloring exists: ";
+        printColoring(coloring);
+        return true;
+    } else {
+        cout << "Such coloring does not exist! " << endl;
+        return false;
+    }
+}
+
+int main() {
+	/* Create following graph and test whether it is 3 colorable
+      (3)---(2)
+       |   / |
+       |  /  |
+       | /   |
+      (0)---(1)
+    */
+	GraphNode *n0 = new GraphNode(0);
+	GraphNode *n1 = new GraphNode(1);
+	GraphNode *n2 = new GraphNode(2);
+	GraphNode *n3 = new GraphNode(3);
+	n0->neighbors.push_back(n1);
+	n0->neighbors.push_back(n3);
+	n1->neighbors.push_back(n0);
+	n1->neighbors.push_back(n2);
+	n2->neighbors.push_back(n0);
+	n2->neighbors.push_back(n1);
+	n2->neighbors.push_back(n3);
+	n3->neighbors.push_back(n0);
+	n3->neighbors.push_back(n2);
+	
+	int m = 3; // number of colors
+	cout << graphColoring(n0, m) << endl;
+	
+	delete n0;
+	delete n1;
+	delete n2;
+	delete n3;
 	return 0;
 }
