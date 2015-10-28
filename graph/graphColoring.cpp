@@ -60,6 +60,7 @@ bool graphColoringDFS(int G[][V], int m, vector<int> &coloring, int u) {
 bool graphColoring(int G[][V], int m) {
     // corner cases
     if (m < 1)  return false;
+    if (m >= V)  return true;
     vector<int> coloring(V, 0); // 0 = not yet colored
     if (graphColoringDFS(G, m, coloring, 0)) {
         cout << "coloring exists: ";
