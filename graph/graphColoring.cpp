@@ -135,6 +135,8 @@ bool graphColoringDFS(GraphNode *n, int m, unordered_map<GraphNode *, int> &colo
             if (nNodes.empty())  return true;
             for (int i = 0; i < nNodes.size(); i++) {
                 GraphNode *nn = nNodes[i];
+                // Caution: we need to color EVERY neighboring node correctly before claiming true!
+                // Thus it is WRONG to have: if (graphColoringDFS(nNodes[i], m, coloring)) return true;
                 if (!graphColoringDFS(nNodes[i], m, coloring)) {
                     return false;
                 }
