@@ -1,8 +1,9 @@
-Given a connected graph, detetermine if it is a bipartite graph. 
-
-For the definition of a bipartite graph, see https://en.wikipedia.org/wiki/Bipartite_graph
-For more reference on the general m-coloring problem, see http://www.geeksforgeeks.org/backttracking-set-5-m-coloring-problem/
-For additional problems related to bipartite graph, see e.g. http://www.geeksforgeeks.org/maximum-bipartite-matching/
+/* Given a connected graph, detetermine if it is a bipartite graph. 
+*
+* For the definition of a bipartite graph, see https://en.wikipedia.org/wiki/Bipartite_graph
+* For more reference on the general m-coloring problem, see http://www.geeksforgeeks.org/backttracking-set-5-m-coloring-problem/
+* For additional problems related to bipartite graph, see e.g. http://www.geeksforgeeks.org/maximum-bipartite-matching/
+*/
 
 #include <iostream>
 #include <vector>
