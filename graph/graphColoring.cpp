@@ -117,7 +117,6 @@ bool validColoring(GraphNode *n, unordered_map<GraphNode *, int> &coloring, int 
     for (int i = 0; i < nNodes.size(); i++) {
         GraphNode *nn = nNodes[i];
         if (coloring.find(nn) != coloring.end() && coloring[nn] == color) {
-            cout << "coloring conflict: coloring of " << nn->label << " is the same as " << n->label << endl;
             return false;
         }
     }
@@ -127,18 +126,15 @@ bool validColoring(GraphNode *n, unordered_map<GraphNode *, int> &coloring, int 
 bool graphColoringDFS(GraphNode *n, int m, unordered_map<GraphNode *, int> &coloring){
     if (coloring.find(n) != coloring.end() && coloring[n] != 0)
         return true;
-    cout << "node = " << n->label << endl;
     // recurse on neighbors of s
     for (int c = 1; c <= m; c++) {
         if (validColoring(n, coloring, c)) {
             coloring[n] = c;
-            cout << "color of node " << n->label << " set to be " << c << endl;
             vector<GraphNode *> nNodes = n->neighbors;
             // terminate condition
             if (nNodes.empty())  return true;
             for (int i = 0; i < nNodes.size(); i++) {
                 GraphNode *nn = nNodes[i];
-                cout << "now color neighbor node " << nn->label << " of curnode = " << n->label << endl;
                 if (!graphColoringDFS(nNodes[i], m, coloring)) {
                     return false;
                 }
@@ -153,7 +149,7 @@ bool graphColoring(GraphNode *s, int m) {
     if (m < 1)  return false;
     unordered_map<GraphNode *, int> coloring;
     if (graphColoringDFS(s, m, coloring)) {
-        cout << "A coloring exists: ";
+        cout << "A coloring exists: " << endl;
         printColoring(coloring);
         return true;
     } else {
