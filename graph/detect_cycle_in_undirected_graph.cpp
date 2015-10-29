@@ -55,13 +55,11 @@ bool UndirectedGraph::isCyclicDFS(int u, vector<bool> &visited, int parent) {
     // recurse on the neighboring nodes of u
     for (it = adj[u].begin(); it != adj[u].end(); it++) {
         int nu = *it;
-        cout << "visiting neighboring node " << nu << endl;
         if (!visited[nu]) {
             cout << nu << " is not visited yet" << endl;
             if (isCyclicDFS(nu, visited, u))
                 return true;
         } else if (nu != parent) { // nu is visited but not parent
-            cout << "cycle found at node " << nu << endl;
             return true;
         }
     }
